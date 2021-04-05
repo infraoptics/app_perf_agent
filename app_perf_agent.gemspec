@@ -15,7 +15,6 @@ Gem::Specification.new do |s|
     f.match(%r{^(test|spec|features)/})
   end
 
-  s.required_ruby_version = '2.7.1'
 
   s.bindir        = "exe"
   s.executables   = s.files.grep(%r{^exe/}) { |f| File.basename(f) }
@@ -30,5 +29,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency "simplecov", "0.14.1"
   s.add_runtime_dependency "msgpack"
   s.add_runtime_dependency "vmstat", "2.3.1"
-  s.add_runtime_dependency "pg"
 end
