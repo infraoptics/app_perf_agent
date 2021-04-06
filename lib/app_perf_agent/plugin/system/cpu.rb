@@ -8,6 +8,7 @@ module AppPerfAgent
     module System
       # CPU class to collect cpu stats from the host
       class Cpu < AppPerfAgent::Plugin::Base
+        # https://github.com/threez/ruby-vmstat/blob/master/lib/vmstat/cpu.rb#L2-L12
         attr_accessor :last
 
         def initialize

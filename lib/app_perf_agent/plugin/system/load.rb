@@ -8,6 +8,7 @@ module AppPerfAgent
     module System
       # Load class to collect load stats from the host
       class Load < AppPerfAgent::Plugin::Base
+        # https://github.com/threez/ruby-vmstat/blob/master/lib/vmstat/load_average.rb#L6-L8
         def call
           loads = Vmstat.load_average
           [

@@ -8,6 +8,8 @@ module AppPerfAgent
     module System
       # Disk class to collect disk stats from the host
       class Disk < AppPerfAgent::Plugin::Base
+        # https://github.com/threez/ruby-vmstat/blob/master/lib/vmstat/disk.rb#L2-L16
+        # https://github.com/threez/ruby-vmstat/blob/master/lib/vmstat/linux_disk.rb
         def call
           disks = Vmstat.snapshot.disks
           disks.flat_map do |disk|
