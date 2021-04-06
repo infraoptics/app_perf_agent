@@ -1,17 +1,21 @@
-require_relative  "app_perf_agent/logger"
-require_relative  "app_perf_agent/plugin"
-require_relative  "app_perf_agent/dispatcher"
-require_relative  "app_perf_agent/worker"
+# frozen_string_literal: true
 
+require_relative  'app_perf_agent/logger'
+require_relative  'app_perf_agent/plugin'
+require_relative  'app_perf_agent/dispatcher'
+require_relative  'app_perf_agent/worker'
+
+# rubocop:disable Style/Documentation
 module AppPerfAgent
+  # rubocop:enable Style/Documentation
   DEFAULTS = {
     environment: nil,
     daemon: false,
     host: 'localhost:5000',
     ssl: false,
     license_key: '',
-    pidfile: File.dirname(__FILE__) + "/../app_perf_agent.pid"
-  }
+    pidfile: "#{File.dirname(__FILE__)}/../app_perf_agent.pid"
+  }.freeze
 
   def self.hostname
     @hostname ||= Socket.gethostname

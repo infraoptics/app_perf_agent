@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'rubygems'
-require_relative "../lib/app_perf_agent/cli"
+require_relative '../lib/app_perf_agent/cli'
 
 cli = AppPerfAgent::CLI.instance
 cli.parse

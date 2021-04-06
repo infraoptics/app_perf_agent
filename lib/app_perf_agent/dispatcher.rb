@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 require 'net/http'
 require 'msgpack'
 require 'base64'
 
 module AppPerfAgent
+  # rubocop:disable Style/Documentation
   class Dispatcher
+    # rubocop:enable Style/Documentation
     def initialize
       @start_time = Time.now
       @queue = Queue.new
@@ -14,7 +18,7 @@ module AppPerfAgent
     end
 
     def queue_empty?
-      @queue.size.to_i == 0
+      @queue.size.to_i.zero?
     end
 
     def dispatch_interval
@@ -31,43 +35,46 @@ module AppPerfAgent
     end
 
     def dispatch
-      begin
-        events = drain(@queue)
-        dispatch_events(events.dup)
-      rescue => ex
-        ::AppPerfAgent.logger.error "#{ex.inspect}"
-        ::AppPerfAgent.logger.error "#{ex.backtrace.inspect}"
-      ensure
-        reset
-      end
+      events = drain(@queue)
+      dispatch_events(events.dup)
+    rescue StandardError => e
+      ::AppPerfAgent.logger.error e.inspect.to_s
+      ::AppPerfAgent.logger.error e.backtrace.inspect.to_s
+    ensure
+      reset
     end
 
     private
 
     def dispatch_events(data)
-      if data && data.length > 0
+      # rubocop:disable Style/GuardClause
+      if data&.length&.positive?
         uri = URI(url)
 
         sock = Net::HTTP.new(uri.host, uri.port)
         sock.use_ssl = AppPerfAgent.options[:ssl]
-
-        req = Net::HTTP::Post.new(uri.path, { "Content-Type" => "application/json", "Accept-Encoding" => "gzip", "User-Agent" => "gzip" })
+        # rubocop:disable Layout/LineLength
+        req = Net::HTTP::Post.new(uri.path,
+                                  { 'Content-Type' => 'application/json', 'Accept-Encoding' => 'gzip',
+                                    'User-Agent' => 'gzip' })
         req.body = compress_body(data)
-        req.content_type = "application/octet-stream"
+        # rubocop:enable Layout/LineLength
+        req.content_type = 'application/octet-stream'
 
-        res = sock.start do |http|
+        sock.start do |http|
           http.read_timeout = 30
           http.request(req)
         end
         data.clear
       end
+      # rubocop:enable Style/GuardClause
     end
 
     def compress_body(data)
       body = MessagePack.pack({
-        "host" => AppPerfAgent.hostname,
-        "data" => data
-      })
+                                'host' => AppPerfAgent.hostname,
+                                'data' => data
+                              })
 
       compressed_body = Zlib::Deflate.deflate(body, Zlib::DEFAULT_COMPRESSION)
       Base64.encode64(compressed_body)
