@@ -1,0 +1,16 @@
+Layout/LineLength:
+  Max: 90
+
+MethodLength:
+  Description: 'Avoid methods longer than 30 lines of code.'
+  Max: 30 # default is 10
+
+Metrics/AbcSize:
+  Enabled: false
+
+AllCops:
+  SuggestExtensions: false
+
+GlobalVars:
+  AllowedVariables:
+    - $TESTING

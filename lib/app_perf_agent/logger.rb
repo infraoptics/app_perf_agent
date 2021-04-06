@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 require 'logger'
 
 module AppPerfAgent
+  # rubocop:disable Style/Documentation
   class Logger
-    def self.initialize_logger(log_target = STDOUT)
-      oldlogger = defined?(@logger) ? @logger : nil
+    # rubocop:enable Style/Documentation
+    def self.initialize_logger(log_target = $stdout)
       @logger = ::Logger.new(log_target)
       @logger.level = ::Logger::INFO
       @logger
@@ -14,7 +17,7 @@ module AppPerfAgent
     end
 
     def self.logger=(log)
-      @logger = (log ? log : ::Logger.new(File::NULL))
+      @logger = (log || ::Logger.new(File::NULL))
     end
 
     def logger
