@@ -6,7 +6,7 @@ module AppPerfAgent
     module System
       class Network < AppPerfAgent::Plugin::Base
         def call
-          inets = Vmstat.ethernet_devices
+          inets = Vmstat.network_interfaces
           inets.flat_map {|inet|
             [
               ["system.network.in_bytes", inet.in_bytes, { "name" => inet.name.to_s }],
